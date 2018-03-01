@@ -2,10 +2,13 @@ extends _layouts/base
 
 include _modules/link/link
 
+
+
 block content
   .container
-    .h1 Nasa stuff
-    .searchbar
-      input#search(type='text' placeholder="search for something" value='Moon')
-      button#submit search
+    .header
+      .h1 Nasa stuff
+      .searchbar
+        input#search(type='text' placeholder="search for something" value='Moon')
+        button#submit search
     #images

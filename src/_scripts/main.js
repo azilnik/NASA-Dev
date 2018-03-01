@@ -30,8 +30,9 @@ function get(u){
       var check = j.collection.items[i].data[0].media_type;
       if(check == "image"){
         var pic = j.collection.items[i].links[0].href;
-        var picDiv = document.createElement('img');
-        picDiv.src=`${pic}`;
+        var picDiv = document.createElement('div');
+        picDiv.style.backgroundImage=`url(${pic})`;
+        picDiv.className="spacePic";
         document.getElementById('images').appendChild(picDiv);
       } else {
         console.log(`${j.collection.items[i].data[0]} is not an image.`);
