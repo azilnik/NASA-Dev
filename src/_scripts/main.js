@@ -12,34 +12,45 @@
 
 'use strict';
 
-var $ = require('jquery');
+// var $ = require('jquery');
 var Link = require('../_modules/link/link');
-var apiurl = 'https://images-api.nasa.gov/';
+var apiurl = 'https://images-api.nasa.gov';
 var apikey = 'CM9veZyv8UZ0Qv90ZeZoPmKfynfaqX7ASIZITYea';
 var apod = 'https://api.nasa.gov/planetary/apod?api_key='+apikey;
-function getNasaImage(url){
-  let imageurl =[]
-  //Fetch the User Profile from the API
-  fetch(url)
+
+function get(u){
+  //Fetch the info from the API
+  fetch(u)
   .then(function(r){
-    return r.json(); //Return the JSON object of the user profile
+    console.log(`The request for ${r} is coming back with ${r.status}.`)
+    return r.json(); //Return the JSON object
   })
-  .then(function(j){
-    let image = j.hdurl;
-     let imagestructure =`<img src="${image}">`;
-     return imagestructure;
-  });
-  return fetch(url);
+  .then(function(j){ //Whatever gets returned from the previous becomes the var in the next then.
+    for(var i=0, max = j.collection.items.length;i<max;i++){
+      var check = j.collection.items[i].data[0].media_type;
+      if(check == "image"){
+        var pic = j.collection.items[i].links[0].href;
+        var picDiv = document.createElement('img');
+        picDiv.src=`${pic}`;
+        document.getElementById('images').appendChild(picDiv);
+      } else {
+        console.log(`${j.collection.items[i].data[0]} is not an image.`);
+      }
+    }
+  }
+)};
+
+
+
+function search(){
+  document.getElementById('images').innerHTML=' ';
+  var search = document.getElementById('search').value;
+  var query = `${apiurl}/search?q=${search}`;
+  console.log(query);
+  get(query);
 };
 
-let test = getNasaImage(apod);
-console.log(test);
-
-
-//document.getElementById
-
-// $(function() {
-//   new Link(); // Activate Link modules logic
-//
-//
-// });
+window.onload=function(){
+  document.getElementById('submit').addEventListener('click',search);
+  search();
+};
