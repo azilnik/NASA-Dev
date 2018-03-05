@@ -24,9 +24,9 @@ vhcenter()
     position fixed
     top 0
     z-index 99999
-    background-color rgba(255,255,255,0.8)
+    background-color rgba(255,255,255,0.9)
     width 100%
-    padding 0pt 32pt 0pt 32pt
+    padding 0pt 16pt 0pt 16pt
     height 40pt
     .h1
       flex 1
@@ -40,14 +40,41 @@ vhcenter()
       width 100%
   #images
     z-index 1
-    padding 72pt 24pt 0pt 24pt
+    padding 40pt 8pt 0pt 8pt
     width 100%
+    display grid
+    grid-template-columns 1fr 1fr 1fr
+    @media screen and (max-width: 930px)
+      grid-template-columns 1fr 1fr
+    @media screen and (max-width: 660px)
+      grid-template-columns 1fr
     .spacePic
       background-size cover
-      width 200pt
-      height 200pt
+      background-position center center
+      min-width 200pt
+      min-height 200pt
       display inline-block
       margin 8pt
+  footer
+    display flex
+    align-items center
+    position fixed
+    left 0
+    bottom 0
+    width 100%
+    z-index 99999
+    background-color rgba(255,255,255,0.9)
+    width 100%
+    padding 16pt 16pt 16pt 16pt
+    // height 40pt
+    #search-list
+      padding 0 0 0 8pt
+      .previous-search
+        display inline-block
+        padding 0 8pt 0 0
+
+
+
 
 
 
