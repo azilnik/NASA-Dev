@@ -56,19 +56,6 @@ function updateHistory(q){
       console.log(`The current list in memory is ${searchHistory}.`);
       console.log(`The current list in localStorage is ${localStorage.getItem("searchHistory")}.`);
     };
-    // if (searchHistory[i] == q) {
-    //   isInArray = true;
-    //   break;
-    //   console.log(`${q} shouldn't be added to the list again.`);
-    // };
-    // if(isInArray == false){
-    //   // myList.setItem(localStorage.length,query);
-    //   // console.log(localStorage[i].);
-    //   console.log(`${q} isn't in the list yet and should be added.`);
-    //   searchHistory.push(`${q}`);
-    //   pushToLocalStorage('searchHistory',searchHistory);
-    //   addToPreviousSearchList();
-    // };
   };
 };
 
@@ -99,6 +86,12 @@ function pullFromLocalStorage(l){
   searchHistory = JSONData;
 }
 
+function eraseSearchHistory(){
+  document.getElementById('search-list').innerHTML='';
+  searchHistory = [];
+  pushToLocalStorage('searchHistory',searchHistory);
+}
+
 function search(){
   document.getElementById('images').innerHTML=' ';
   var search = document.getElementById('search').value;
@@ -120,5 +113,9 @@ window.onload=function(){
       search();
     };
   });
+  document.getElementById('kill').addEventListener('click',function(){
+    eraseSearchHistory();
+  });
+
   search();
 };
