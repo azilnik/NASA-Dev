@@ -18,6 +18,7 @@ let apiurl = 'https://images-api.nasa.gov';
 let apikey = 'CM9veZyv8UZ0Qv90ZeZoPmKfynfaqX7ASIZITYea';
 let apod = 'https://api.nasa.gov/planetary/apod?api_key=' + apikey;
 let searchHistory = [];
+let kvp;
 
 function get(u){
   //Fetch the info from the API
@@ -65,9 +66,16 @@ function addToPreviousSearchList(){
   //Loop through the list of items in the searchHistory to add to list
   for(var i=0,max=searchHistory.length;i<max;i++){
     let history = document.createElement('a');
+    let id = `${searchHistory[i]}`;
     history.className="previous-search";
-    history.id = `${searchHistory[i]}`;
+    history.id = id;
+
     history.innerHTML =`${searchHistory[i]}`;
+    history.setAttribute('href','#');
+    history.addEventListener('click',function(){
+      document.getElementById('search').value = `${id}`;
+      search();
+    });
     document.getElementById('search-list').appendChild(history);
   }
 };
@@ -84,13 +92,7 @@ function pullFromLocalStorage(l){
   var JSONData = JSON.parse(recievedData);
   console.log(`Hey boss, got some data from localStorage. It's ${JSONData}. I'll add that to our global searchHistory variable.`);
   searchHistory = JSONData;
-}
-
-function eraseSearchHistory(){
-  document.getElementById('search-list').innerHTML='';
-  searchHistory = [];
-  pushToLocalStorage('searchHistory',searchHistory);
-}
+};
 
 function search(){
   document.getElementById('images').innerHTML=' ';
@@ -100,6 +102,40 @@ function search(){
   get(query);
   updateHistory(search);
 };
+
+function eraseSearchHistory(){
+  document.getElementById('search-list').innerHTML='';
+  searchHistory = [];
+  pushToLocalStorage('searchHistory',searchHistory);
+};
+
+
+
+function insertParam(key, value) {
+    key = encodeURI(key);
+    value = encodeURI(value);
+    kvp = document.location.search.substr(1).split('&');
+    var i=kvp.length; var x; while(i--)
+    {
+        x = kvp[i].split('=');
+        if (x[0]==key)
+        {
+            x[1] = value;
+            kvp[i] = x.join('=');
+            break;
+        }
+    }
+    if(i<0) {kvp[kvp.length] = [key,value].join('=');}
+
+//this will reload the page, it's likely better to store this until finished
+// document.location.search = kvp.join('&');
+}
+
+function refreshParam(){
+  document.location.search = kvp.join('&');
+}
+
+
 
 window.onload=function(){
   pullFromLocalStorage('searchHistory');
